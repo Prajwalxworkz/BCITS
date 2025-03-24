@@ -1,0 +1,532 @@
+1.	create table Employee(
+	
+	emp_id int auto_increment primary key,
+	name vcarchar(255) not null,
+	age int,
+	joining_date date
+	
+	);
+	
+	alter table Employee add column salary float;
+	
+2.	set safety check=1;
+	drop table tempData from database_name;
+
+3. 	create table Products(
+	
+	product_id int auto_increment primary key,
+	product_name vcarchar(255) not null,
+	price float if price>0 ,
+	);
+	
+4. rename table OldOrders to ArchivedOrders;
+
+5. 
+
+6. insert into table Students values('student_id'=101, 'name'='Alice', 'age'=20, 'grade'='A');
+
+7.update table ResultsTable set grade='B' where Marks<60;
+
+8.delete from Orders where status='cancelled';
+
+9.	select * 
+	from tableA as A 
+   innerjoin
+   ( 
+   select *
+   from tableB as B
+   where A.ID=B.ID;)
+
+10. Loading datfa into employee table
+
+	1. set the global configuration.
+	2.laod the file(with .csv extention) .
+	3.define the delimiters like ',', space character(based on windows, linux or os)
+	
+11. select name
+	from Employee
+	where joining_date > '2020-01-01';
+	
+12. select Avg(Salary) as average_salary , Min(Salary) as mini_salary, Max(Salary) as max_salary  
+	from Employee;
+	
+13.	select * 
+	from Orders
+	where OrderAmount >1000 And status='Delivered';
+	
+14. select Count(*) as count
+	from Sales
+	groupingBy caategory;
+	
+15. select name, order_details
+	from Customers as C, Orders as O
+	where C.ID=O.ID
+	
+16. select name
+	from Customers as C
+	Right join
+	(
+	select order_details
+	from Orders as O
+	where C.ID=O.ID);
+	
+17. select *
+	from Customers as C
+	Right join
+	(
+	select *
+	from Orders as O 
+	where C.ID=O.ID
+	);
+	
+18. select name	
+	from Employee
+	goupingBy salary
+	havingBy salary >( select Avg(salary) from Employee);
+	
+19.  select orders	
+	from Orders as O
+	goupingBy order_amount
+	havingBy order_amount >( select Avg(customer_amount) from Customers as C where C.ID=O.ID );
+	
+20. select name, order, product
+	from Customers as C, Orders as O, Products as Products
+	where C.ID=O.ID and O.ID=P.ID;
+	
+	
+--------------------------------------------------	Hibernate & JPA-------------------------------------------------
+
+26.  ORM(Object Relational Mapping) is one of the concepts in JPA which provides IMPLEMENTATION to the standard methods 
+	of JPA.
+	 
+	 Architechture:
+	 
+	 JPA provides standards to connect with the database.
+	 ORM provides implementations to it(using Hibernate etc.)
+	 It has components such as
+		1.Persistence: The class which provides methods such as createEntityManagerFactory() to create EntityManagerFactory.
+		
+		2.EntityManagerFactory: the createEntityManagerFactory() returns the INTERFACE EntityManagerFactory which inturn provides the method createEntityManager().
+		
+		3.EntityManager : the createEntityManager() returns the EntityManager the INTERFACE which povides the methods like persist(), find(), merege(), remove() etc.
+		
+27. The components of JPA are:
+	
+	1.Persistence: The class which provides methods such as createEntityManagerFactory() to create EntityManagerFactory.
+		
+	2.EntityManagerFactory: the createEntityManagerFactory() returns the INTERFACE EntityManagerFactory which inturn provides the method createEntityManager().
+		
+	3.EntityManager : the createEntityManager() returns the EntityManager the INTERFACE which povides the methods like persist(), find(), merege(), remove() etc.
+	
+28. 1. @OneToMany : It helps to map one entity to many other entities.
+	Example: use this annotation above the classs
+	@Entity
+	@OneToMany
+	@Data
+	public UserEntity{
+		@ID
+		private Integer id @GenereateValue(strategy='');
+		private String name;
+		private String email;
+		Private String password;
+		
+	}
+	
+	
+	2. @OneToOne : It helps to map one entity to only one entity.
+	Example: use this annotation above the classs
+	@Entity
+	@OneToOne
+	@Data
+	public UserEntity{
+		@ID
+		private Integer id @GenereateValue(strategy='');
+		private String name;
+		private String email;
+		Private String password;
+		
+	}
+	
+	3. @ManyToOne : It helps to map many entities to one entity.
+	Example: use this annotation above the classs
+	@Entity
+	@ManyToOne
+	@Data
+	public UserEntity{
+		@ID
+		private Integer id @GenereateValue(strategy='');
+		private String name;
+		private String email;
+		Private String password;
+		
+	}
+	
+	4. @Entity : It used to map the tables created to the database.
+	
+	Example: use this annotation above the classs
+	@Entity
+	@Data
+	public UserEntity{
+		@ID
+		private Integer id @GenereateValue(strategy='');
+		private String name;
+		private String email;
+		Private String password;	
+	}
+	
+	
+29. JPQL is the query language used when implenting JPA while interacting with the database.
+
+30. Considering the entity table name as Products
+	@ceateNamedQuery(name='getMinimumPrice', query='select product.Min(price) from Products product')
+	
+31. Connecting database using JPA
+
+	i)Creating EntityManager using createEntityManagerFactory() by giving pesistence name. 
+	ii)Creating EntityManager using createEntityManager() .
+	iii)begin the transaction using the EntityManager.
+	1v) calling the related methods like persist, find, merege or remove.
+	v) commit the transaction
+	vi) finally close all the connections
+	
+	EntityManagerFactory emf= Persistence.createEntityManagerFactory('userentity');
+	EntityManager em= emf.createEntityManager();
+	try{
+
+	em.getTransaction().begin();
+	em.persist(); // or em.find() or em.merge() or em.remove()
+	em.getTransaction().commit();
+	}catch(Exception e){
+		em.getTransaction().rollback();
+		System.out.println(e.getMessage())
+	}finally}{
+		em.close();
+	}
+	
+32. Connecting database using JDBC
+
+	i)import packages
+	11)load and register the Drivers
+	iii)get connection
+	iv)create statement
+	v)execute the statement
+	vi)process the results
+	vii)close the connections.
+
+	------------------------------------------------JAVA-----------------------------------------------------
+	
+33. 1.Polymorphism: Objects behaving differently at the given instace of time.
+
+	@Data
+	public class Bank{
+		
+		private float debit;
+		private float credit;
+		private float balance;
+		
+		public  float getSimpleInterest( float balance, float time){
+		 float interest=2.5;
+		  float si=(balance*time*interest)/100;
+		  return si;
+		}
+	
+	}
+	
+	@Data
+	public class SbiBank extends Bank{
+	
+		private float interest;
+		
+		public  float getSimpleInterest(float interest, float balance, float time){
+		  float si=(balance*time*interest)/100;
+		  return si;
+		}
+	}
+	@Data
+	public class BankRunner{
+	
+		SbiBank sbi=new BankRunner();// polymophism
+		System.out.println(" The simple interest is "+sbi.getSimpleInterest(3, 10000, 2));
+	}
+	
+	
+	2. Encapsulation:(has- a- relationship) hiding the sates and behaviours using the concepts called class and objects.
+		@Data
+		public class Library{
+			
+			private int id;
+			private String  name;
+			private float price ;
+			
+		}
+		
+		@Data
+		public class Library{
+			
+		Library library;// Encapsulation
+			
+			
+		}
+		
+		
+	3.Inheritance: Sharing of states and behaviours from onr class to another class is called Inheritance.
+	
+	*shared calss --> parent or base class
+	*received calss --> child or derived class
+	* using key word 'extends'.
+	
+	@Data
+	public class Bank{
+		
+		private float debit;
+		private float credit;
+		private float balance;
+		
+		public  float getSimpleInterest( float balance, float time){
+		 float interest=2.5;
+		  float si=(balance*time*interest)/100;
+		  return si;
+		}
+	
+	}
+	
+	@Data
+	public class SbiBank extends Bank{
+	
+		private float interest;
+		
+		public  float getSimpleInterest(float interest, float balance, float time){
+		  float si=(balance*time*interest)/100;
+		  return si;
+		}
+		
+	}
+	@Data
+	public class BankRunner{
+	
+		SbiBank sbi = new SbiBank();
+		System.out.println("Balance: "+sbi.getBalance());
+	
+	}
+	
+	4. Abstraction: Showing only the required functionalities to the user by hiding their implementation details is called Abstraction.
+	* achieved using the keyword interfaces.
+	
+	public class UserRepo{
+	
+	 void saveUser(UserDto dto);
+	}
+	
+	public class UserRepoImpl implements UserRepo{
+	
+	@Autowired
+	UserRepo repo;
+	
+	  repo.saveUser(UserDto dto){
+	    
+	  };
+	}
+	
+	5. Throw and Throws
+	
+		Throw: It throws the exception that occured which is captured by the catch block.
+		
+		public calss Sample{
+			
+			int num;
+			int deno;
+			try{
+				if(deno==0){
+					throw new ArithmeticException();
+				}else{
+				float result=num/deno;
+				System.out.println(result);
+				}
+			}catch(ArithmeticException e){
+				System.out.println(e.printStack());
+			}
+			
+			
+		
+		}
+
+		Throws: it does not handle the exception but it propagates the exception to the called method.
+	
+		
+		public calss Sample throws ArithmeticException{
+			int num;
+			int deno;
+	
+			float result=num/deno;
+			System.out.println(result);	
+		
+		}
+		
+		
+34.
+	1.	equals(): 
+		*to check if the values are same or not.
+		*used for String values(non primitive datatypes);
+		*checks the memory address of the varibles ;
+		
+		== :
+		*to check if the values are same or not.
+		*used for primitive datatypes;
+		*checks the stored values the varibles.
+		
+		
+	2.final: 
+		*used to declared and initialise  the varibles and once the initialised its value can not be changed.
+		
+	finally: 
+	* the  logic written inside this block will get executed at any cost .(Eg.usually used after the catch block close all the connctions during the JPA  database connection) 
+	
+	3.Implements: 
+		*used to achieve Abstraction;
+		* using the keyword interfaces.
+		
+	Extends: 
+		*used to achieve Inheritance;
+		* using key word 'extends'.
+	
+35. Complilation error
+
+36. Runtime error
+
+37. message
+
+38. false 
+
+39. JavaProgramming
+
+40.true 
+
+41. 1	
+
+42. 1	
+
+43.@Component
+	@ComponentScan(basepackage=" ")
+	public class MyComponent{
+		@Bean
+		public void display(){
+			System.out.println("Hello from MyComponent")
+		}
+	}
+	
+44. Initialise during the creation of the object
+
+45. unless the arguments vary there no problem
+
+46. if the client application has the receiving end , it diplays Hello.
+	
+	
+47.
+	public void sendMail(){
+
+	final String userNmae="";
+	final String password="";
+	
+	Properties prop=new Properties();
+	prop.put("mail.smtp.host", userName);
+	prop.put("mail.smtp.port", 587);
+
+	Session session =new getInstance(
+		 PasswordAuthenticator getPasswordAuthenticator(password){
+			return passwordAuthenticator;
+		 }
+	)
+	
+	Message message = new Message(session);
+	message.setSubject("");// related message
+	message.setContent("");//related message
+	message.send();
+
+}
+
+
+48. 
+
+49.O(log n)
+
+50.public class Pattern{
+	
+	for(int i=1;i<6;i++){
+		for(int j=1;j<=i;j++){
+		
+			System.out.println(i);
+			
+		}
+	}
+	
+	for(int i=1;i<=4;i++){
+		for(int j=1;j<=4;j++){
+		
+			System.out.println(i);
+			
+		}
+	}
+
+}
+
+51. public String subString(String value){
+	
+	String sub="";
+	for(int i=0;i<value.length;i++){
+		sub+=AtCharArray[i];
+		System.out.println(sub);
+			
+	}
+}	
+
+
+52.  public class Sample{
+
+	Map map=new TreeMap();
+	map.add(1);
+	map.add(2);
+	map.add(3);
+	map.add(4);
+	
+	System.out.println(map.stream().findFirst());
+	
+}
+
+53. dispatcherServlet is one the components of Spring MVC which is used to intercept the request sent by the client, then pass on to the handler mapping and then sent to the controller which returns the view back to the client.
+
+54.
+
+
+
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
